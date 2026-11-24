@@ -5,7 +5,7 @@
 
 Practise a job interview with an AI interviewer tailored to your resume and the job you want, out loud or typed, and get honest coaching on every answer.
 
-**Try it: [ai-interviewer.mnplabs.uk](https://ai-interviewer.mnplabs.uk)**. No sign-up; "Try a sample" fills in a resume and job description if you don't have one handy.
+**Try it: [ai-interviewer.mnplabs.in](https://ai-interviewer.mnplabs.in)**. No sign-up; "Try a sample" fills in a resume and job description if you don't have one handy.
 
 ![Coach feedback on an answer during a practice interview](docs/images/coach-feedback.png)
 
@@ -169,7 +169,7 @@ All configuration lives in GitHub. Each deploy writes `server/.env` from the `pr
 
 | Kind | Name | Value |
 |---|---|---|
-| Environment variable | `SITE_ADDRESS` | The site's hostname, e.g. `ai-interviewer.mnplabs.uk`; passkeys belong to it |
+| Environment variable | `SITE_ADDRESS` | The site's hostname, e.g. `ai-interviewer.mnplabs.in`; passkeys belong to it |
 | Environment secrets and variables | Every server variable (`MONGODB_URI`, `GROQ_API_KEY`, `DAILY_TOKENS`, ...) | Copied to `server/.env` as they are: secrets for keys, variables for plain settings. A new one needs no workflow change |
 | Repository secrets | `DHI_USERNAME`, `DHI_TOKEN` | A Docker Hub username and read-only access token, for pulling the Docker Hardened base images |
 | Repository variable | `VITE_TURNSTILE_SITE_KEY` | The Turnstile site key; public, and read when the image is built |

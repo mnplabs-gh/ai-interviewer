@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: Check /api/health
         env:
-          URL: https://ai-interviewer.mnplabs.uk/api/health
+          URL: https://ai-interviewer.mnplabs.in/api/health
         # Five tries over about two minutes, so a deploy's restart or a network blip isn't an outage.
         run: |
           for i in 1 2 3 4 5; do

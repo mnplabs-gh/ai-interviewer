@@ -1,6 +1,6 @@
 # Deployment: services and setup
 
-The app is two containers on a free Oracle Cloud VM, reachable only through Cloudflare and redeployed from GitHub on every push to `main`. Everything runs on free plans; the only recurring cost is the yearly renewal of `mnplabs.uk`, shared with the portfolio.
+The app is two containers on a free Oracle Cloud VM, reachable only through Cloudflare and redeployed from GitHub on every push to `main`. Everything runs on free plans; the only recurring costs are the yearly renewals of `mnplabs.in` and `mnplabs.uk` (which redirects to `mnplabs.in`), shared with the portfolio.
 
 As of November 2026.
 
@@ -32,9 +32,9 @@ Requests pass through Cloudflare's tunnel to the web container, which serves the
 | Service | What it does for the app | Plan | Cost |
 | --- | --- | --- | --- |
 | Oracle Cloud VM (arm64) | Runs the web and server containers with Docker Compose, shared with the portfolio | Always Free | Free |
-| Cloudflare Registrar | Owns the domain `mnplabs.uk` | At-cost registrar | Yearly renewal |
-| Cloudflare DNS + HTTPS | Serves `ai-interviewer.mnplabs.uk`, terminates HTTPS, absorbs network floods | Free | Free |
-| Cloudflare Tunnel | Forwards `ai-interviewer.mnplabs.uk` to `127.0.0.1:8081` on the VM; the VM opens no inbound ports | Free | Free |
+| Domain registrar | Owns `mnplabs.in` (the live domain) and `mnplabs.uk` (redirects to `mnplabs.in`) | Paid | Yearly renewal |
+| Cloudflare DNS + HTTPS | Serves `ai-interviewer.mnplabs.in`, terminates HTTPS, absorbs network floods | Free | Free |
+| Cloudflare Tunnel | Forwards `ai-interviewer.mnplabs.in` to `127.0.0.1:8081` on the VM; the VM opens no inbound ports | Free | Free |
 | [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/plans/) | Bot check on each setup step, starting an interview and restoring a history | Free | Free, unlimited checks |
 | Cloudflare Web Analytics | Visits, pages, referrers and countries, in aggregate | Free | Free |
 | GitHub repo `mnp-gh/ai-interviewer` | Source code | Free | Free |
@@ -60,7 +60,7 @@ All settings live in GitHub; each deploy writes them onto the VM, so nothing is 
 | --- | --- | --- | --- | --- |
 | `DHI_USERNAME`, `DHI_TOKEN` | Secret | Repository | Build job | Docker Hub account + read-only token |
 | `VITE_TURNSTILE_SITE_KEY` | Variable | Repository | Web image build | Public Turnstile site key |
-| `SITE_ADDRESS` | Variable | `production` environment | Compose file | `ai-interviewer.mnplabs.uk`; passkeys belong to it, so never change it |
+| `SITE_ADDRESS` | Variable | `production` environment | Compose file | `ai-interviewer.mnplabs.in`; passkeys belong to it, so changing it invalidates every registered passkey (it moved from `mnplabs.uk` in November 2026) |
 | `MONGODB_URI` | Secret | `production` environment | API | Atlas connection string |
 | `GROQ_API_KEY` | Secret | `production` environment | API | Required |
 | `MISTRAL_API_KEY`, `GEMINI_API_KEY`, `OPENROUTER_API_KEY` | Secret | `production` environment | API | Optional, more models |
@@ -105,13 +105,13 @@ Day to day, everything is done from GitHub, Cloudflare or the app itself; the VM
 | Task | How |
 | --- | --- |
 | Change a setting or budget | Edit it in GitHub (Configuration above), then run the workflow |
-| See today's usage | `ai-interviewer.mnplabs.uk/admin` with `ADMIN_TOKEN`: tokens, searches, audio and voice against their budgets |
+| See today's usage | `ai-interviewer.mnplabs.in/admin` with `ADMIN_TOKEN`: tokens, searches, audio and voice against their budgets |
 | Pause new interviews | Set `MAINTENANCE_MODE=true` in `production` and run the workflow; interviews in progress can finish |
 | See overall traffic | Cloudflare → Analytics & Logs → Web Analytics |
 | Get alerted when the site is down | The Uptime workflow emails you when `/api/health` fails |
 | Keep dependencies current | Review and merge Dependabot's weekly pull requests |
 | Swap a retired free model | Edit `server/src/ai/models.ts`, the one file that lists every model |
-| Keep the domain | Keep the `mnplabs.uk` renewal active in Cloudflare Registrar |
+| Keep the domains | Keep the `mnplabs.in` and `mnplabs.uk` renewals active; `mnplabs.uk` must keep redirecting to `mnplabs.in` so old links work |
 
 Free-tier limits that matter, and what keeps the app under them:
 
